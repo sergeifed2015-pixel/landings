@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" role="img" aria-label="Веха">
+  <rect width="32" height="32" rx="8" fill="#1E5C4F"/>
+  <path d="M13 8 L21.5 11 L13 14 Z" fill="#B6801F"/>
+  <path d="M13 7.5 V24.5" stroke="#EEE7D7" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M9.5 24.5 H16.5" stroke="#EEE7D7" stroke-width="1.6" stroke-linecap="round" opacity=".55"/>
+</svg>

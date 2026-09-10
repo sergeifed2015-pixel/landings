@@ -6,6 +6,7 @@
 <script>document.documentElement.className="js"</script>
 <title>Веха — юридическое бюро. Банкротство физических лиц</title>
 <meta name="description" content="Ведём процедуру банкротства физических лиц по всей России. Проверка за три вопроса, честная смета, сопровождение до определения суда.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=Literata:opsz,wght@7..72,400;7..72,500;7..72,600&display=swap" rel="stylesheet">
@@ -63,8 +64,7 @@ a{color:inherit}
 .top{position:sticky;top:0;z-index:70;background:rgba(234,237,236,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
 .top-in{display:flex;align-items:center;justify-content:space-between;gap:22px;height:64px}
 .logo{display:flex;align-items:center;gap:11px;text-decoration:none}
-.logo .mk{width:26px;height:26px;flex:none;border-radius:5px;background:var(--green);position:relative}
-.logo .mk::after{content:"";position:absolute;right:5px;bottom:5px;width:8px;height:8px;background:var(--ochre);border-radius:2px}
+.logo .mk{width:28px;height:28px;flex:none;display:block}
 .logo b{font-family:var(--serif);font-weight:600;font-size:23px;letter-spacing:.01em}
 .logo span{font-size:12px;color:var(--slate);border-left:1px solid var(--line);padding-left:10px;line-height:1.25}
 .menu{display:flex;gap:24px;font-size:14.5px}
@@ -402,7 +402,12 @@ body{background:transparent}
 <header class="top">
   <div class="wrap top-in">
     <a class="logo" href="#home">
-      <span class="mk" aria-hidden="true"></span>
+      <svg class="mk" viewBox="0 0 32 32" role="img" aria-label="Веха">
+        <rect width="32" height="32" rx="8" fill="#1E5C4F"/>
+        <path d="M13 8 L21.5 11 L13 14 Z" fill="#B6801F"/>
+        <path d="M13 7.5 V24.5" stroke="#EEE7D7" stroke-width="2.2" stroke-linecap="round"/>
+        <path d="M9.5 24.5 H16.5" stroke="#EEE7D7" stroke-width="1.6" stroke-linecap="round" opacity=".55"/>
+      </svg>
       <b>Веха</b><span>юридическое бюро<br>банкротство граждан</span>
     </a>
     <nav class="secnav" id="secnav" aria-label="Разделы сайта">
