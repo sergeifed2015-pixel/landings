@@ -9,7 +9,8 @@
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" media="print" onload="this.media='all'" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"></noscript>
 <style>
 :root{
   --deep:#07202B; --sea:#0E3A4C; --teal:#12566B;
@@ -107,7 +108,20 @@ section{position:relative}
 .sec-head h2{font-size:clamp(28px,4.4vw,48px);margin-top:14px}
 .sec-head p{margin-top:16px;color:var(--mist);font-size:17px}
 
-/* ——— вкладки ——— */
+/* ——— секции как вкладки-панели (по одной на экране) ——— */
+.js .panel[hidden]{display:none!important}
+.js .panel{min-height:calc(100svh - var(--hh));border-top:0}
+.js .panel.is-active{animation:panelIn .45s ease both}
+@keyframes panelIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.next-wrap{margin-top:var(--gap)}
+.next{display:inline-flex;align-items:center;gap:14px;padding:14px 0}
+.next span{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--mist)}
+.next b{font-size:20px;font-weight:800}
+.next .arw{color:var(--coral);font-size:22px;line-height:1;transition:transform .2s}
+.next:hover .arw{transform:translateX(6px)}
+.next:hover b{color:var(--foam)}
+
+/* ——— вкладки внутри секций ——— */
 .tabs{display:flex;flex-wrap:wrap;gap:10px;margin:34px 0 30px}
 .tab{font-family:inherit;font-weight:700;font-size:14.5px;color:var(--mist);cursor:pointer;
   background:var(--card);border:1px solid var(--line);border-radius:999px;padding:11px 20px;transition:.2s}
@@ -280,6 +294,7 @@ section{position:relative}
       <b>ПРИБОЙ</b>
     </a>
     <nav class="nav" id="nav" aria-label="Разделы">
+      <a href="#home">Главная</a>
       <a href="#courses">Курсы</a>
       <a href="#schedule">Расписание</a>
       <a href="#coaches">Тренеры</a>
@@ -302,6 +317,7 @@ section{position:relative}
     <b style="letter-spacing:.14em">ПРИБОЙ</b>
     <button class="mclose" id="mclose" aria-label="Закрыть">✕</button>
   </div>
+  <a href="#home">Главная</a>
   <a href="#courses">Курсы</a>
   <a href="#schedule">Расписание</a>
   <a href="#coaches">Тренеры</a>
@@ -311,9 +327,9 @@ section{position:relative}
   <button class="btn btn-coral" data-book>Записаться на занятие</button>
 </aside>
 
-<main id="home">
+<main>
   <!-- hero -->
-  <section class="hero">
+  <section class="hero panel" id="home">
     <div class="wrap">
       <p class="eyebrow">Школа сёрфинга · Чёрное море, Сочи</p>
       <h1>Поймай свою <span class="accent">первую волну</span><br>уже на этих выходных</h1>
@@ -333,7 +349,7 @@ section{position:relative}
   </section>
 
   <!-- курсы (вкладки по уровню) -->
-  <section class="sec" id="courses">
+  <section class="sec panel" id="courses">
     <div class="wrap">
       <div class="sec-head">
         <p class="eyebrow">Программы</p>
@@ -428,7 +444,7 @@ section{position:relative}
   </section>
 
   <!-- расписание (вкладки по локации) -->
-  <section class="sec alt" id="schedule">
+  <section class="sec alt panel" id="schedule">
     <div class="wrap">
       <div class="sec-head">
         <p class="eyebrow">Ближайшие сессии</p>
@@ -468,7 +484,7 @@ section{position:relative}
   </section>
 
   <!-- тренеры -->
-  <section class="sec" id="coaches">
+  <section class="sec panel" id="coaches">
     <div class="wrap">
       <div class="sec-head">
         <p class="eyebrow">Команда</p>
@@ -483,7 +499,7 @@ section{position:relative}
   </section>
 
   <!-- цены -->
-  <section class="sec alt" id="pricing">
+  <section class="sec alt panel" id="pricing">
     <div class="wrap">
       <div class="sec-head">
         <p class="eyebrow">Абонементы</p>
@@ -514,7 +530,7 @@ section{position:relative}
   </section>
 
   <!-- запись -->
-  <section class="sec" id="booking">
+  <section class="sec panel" id="booking">
     <div class="wrap">
       <div class="sec-head">
         <p class="eyebrow">Запись</p>
@@ -565,21 +581,8 @@ section{position:relative}
     </div>
   </section>
 
-  <!-- FAQ -->
-  <section class="sec alt">
-    <div class="wrap">
-      <div class="sec-head"><p class="eyebrow">Вопросы</p><h2>Коротко о важном</h2></div>
-      <div class="faq" style="margin-top:26px">
-        <details open><summary>Нужно ли уметь плавать?<span class="pl"></span></summary><p>Да, базовый навык плавания обязателен — занятия проходят на глубине, где не всегда достаёте дна. Спасатель и страховка есть всегда.</p></details>
-        <details><summary>А если я совсем ничего не умею?<span class="pl"></span></summary><p>Именно для этого есть программа «Первая волна». Большинство встают на доску и проезжают на пене уже в первое занятие.</p></details>
-        <details><summary>Что взять с собой?<span class="pl"></span></summary><p>Купальник, полотенце, крем от солнца и воду. Всё остальное — доску, гидрокостюм, лиш — выдаём на месте.</p></details>
-        <details><summary>Можно оплатить абонементом на месте?<span class="pl"></span></summary><p>Да, оплата на споте картой или переводом. Абонемент активируется с первого занятия и замораживается на время шторма.</p></details>
-      </div>
-    </div>
-  </section>
-
-  <!-- контакты -->
-  <section class="sec" id="contacts">
+  <!-- контакты + вопросы -->
+  <section class="sec panel" id="contacts">
     <div class="wrap">
       <div class="contacts">
         <div>
@@ -594,6 +597,14 @@ section{position:relative}
           <button class="btn btn-coral" data-book style="margin-top:28px">Записаться на занятие</button>
         </div>
         <div class="map">Сёрф-станция на Приморской набережной<br>парковка и душевые рядом</div>
+      </div>
+
+      <div class="sec-head" style="margin-top:var(--gap)"><p class="eyebrow">Вопросы</p><h2>Коротко о важном</h2></div>
+      <div class="faq" style="margin-top:26px">
+        <details open><summary>Нужно ли уметь плавать?<span class="pl"></span></summary><p>Да, базовый навык плавания обязателен — занятия проходят на глубине, где не всегда достаёте дна. Спасатель и страховка есть всегда.</p></details>
+        <details><summary>А если я совсем ничего не умею?<span class="pl"></span></summary><p>Именно для этого есть программа «Первая волна». Большинство встают на доску и проезжают на пене уже в первое занятие.</p></details>
+        <details><summary>Что взять с собой?<span class="pl"></span></summary><p>Купальник, полотенце, крем от солнца и воду. Всё остальное — доску, гидрокостюм, лиш — выдаём на месте.</p></details>
+        <details><summary>Можно оплатить абонементом на месте?<span class="pl"></span></summary><p>Да, оплата на споте картой или переводом. Абонемент активируется с первого занятия и замораживается на время шторма.</p></details>
       </div>
     </div>
   </section>
@@ -617,11 +628,12 @@ section{position:relative}
 (function(){
   var root=document.documentElement, reduce=matchMedia("(prefers-reduced-motion:reduce)").matches;
 
-  /* прелоадер */
+  /* прелоадер — скрываем сразу после готовности страницы (не ждём загрузку видео) */
   function loaded(){ root.classList.add("is-loaded"); }
-  if(document.readyState==="complete") loaded();
-  else window.addEventListener("load", function(){ setTimeout(loaded, 350); });
-  setTimeout(loaded, 4000);
+  setTimeout(loaded, 450);
+  document.addEventListener("DOMContentLoaded", loaded);
+  window.addEventListener("load", loaded);
+  setTimeout(loaded, 2500);
 
   /* видео: если не запустилось — оставляем постер */
   var v=document.getElementById("bgVideo");
@@ -652,20 +664,19 @@ section{position:relative}
     });
   });
 
-  /* кнопки «Записаться» → скролл к форме + подстановка программы */
+  /* кнопки «Записаться» → открыть панель записи + подставить программу */
   var planSel=document.getElementById("f-plan");
   document.querySelectorAll("[data-book]").forEach(function(b){
-    b.addEventListener("click", function(){
+    b.addEventListener("click", function(e){
+      e.preventDefault();
       var plan=b.getAttribute("data-plan");
       if(plan && planSel){
         for(var i=0;i<planSel.options.length;i++){
           if(planSel.options[i].value===plan || planSel.options[i].text===plan){ planSel.selectedIndex=i; break; }
         }
       }
-      closeM();
       resetToForm();
-      document.getElementById("booking").scrollIntoView({behavior:reduce?"auto":"smooth"});
-      setTimeout(function(){ document.getElementById("f-name").focus({preventScroll:true}); }, reduce?0:500);
+      showPanel("booking",{focusName:true});
     });
   });
 
@@ -699,25 +710,83 @@ section{position:relative}
     document.getElementById("f-name").focus();
   });
 
-  /* активная ссылка в навигации + подвижное подчёркивание */
+  /* ——— секции-панели: навигация работает как вкладки ——— */
   var nav=document.getElementById("nav"), ink=document.getElementById("ink");
-  var links=[].slice.call(nav.querySelectorAll("a"));
-  function moveInk(a){ if(!a){ink.style.width="0";return;} ink.style.left=a.offsetLeft+"px"; ink.style.width=a.offsetWidth+"px"; }
-  var sections=links.map(function(a){ return document.querySelector(a.getAttribute("href")); });
-  function onScroll(){
-    var y=window.scrollY+90, cur=null;
-    for(var i=0;i<sections.length;i++){
-      var s=sections[i]; if(s && s.offsetTop<=y) cur=i;
-    }
-    links.forEach(function(a){ a.classList.remove("active"); });
-    if(cur!==null){ links[cur].classList.add("active"); moveInk(links[cur]); }
-    else moveInk(null);
+  var navLinks=[].slice.call(nav.querySelectorAll("a"));
+  var panels=[].slice.call(document.querySelectorAll("main .panel"));
+  var byId={};
+  panels.forEach(function(p){ byId[p.id]=p; p.hidden=true; p.setAttribute("role","tabpanel"); p.tabIndex=-1; });
+  nav.setAttribute("role","tablist");
+  navLinks.forEach(function(a){ a.setAttribute("role","tab"); });
+
+  /* порядок разделов = порядок пунктов меню; ссылка «Дальше» в конце каждой панели */
+  var order=navLinks.map(function(a){ return a.getAttribute("href").slice(1); });
+  order.forEach(function(id,i){
+    if(i===order.length-1) return;
+    var p=byId[id]; if(!p) return;
+    var wrap=p.querySelector(".wrap"); if(!wrap) return;
+    var div=document.createElement("div"); div.className="next-wrap";
+    div.innerHTML='<a class="next" href="#'+order[i+1]+'"><span>Дальше</span><b>'+
+      navLinks[i+1].textContent.trim()+'</b><span class="arw" aria-hidden="true">&rarr;</span></a>';
+    wrap.appendChild(div);
+  });
+
+  var current=null;
+  function moveInk(){
+    var a=null;
+    navLinks.forEach(function(l){ if(l.getAttribute("href").slice(1)===current) a=l; });
+    if(!a){ ink.style.width="0"; return; }
+    ink.style.left=a.offsetLeft+"px"; ink.style.width=a.offsetWidth+"px";
   }
-  window.addEventListener("scroll", onScroll, {passive:true});
-  window.addEventListener("resize", onScroll);
-  links.forEach(function(a){ a.addEventListener("mouseenter", function(){ moveInk(a); });
-    a.addEventListener("mouseleave", onScroll); });
-  onScroll();
+  function showPanel(id,opts){
+    opts=opts||{};
+    var p=byId[id]; if(!p) return;
+    var prev=current;
+    if(id===prev){ closeM(); return; }
+    current=id;
+    panels.forEach(function(x){ if(x!==p){ x.hidden=true; x.classList.remove("is-active"); } });
+    p.hidden=false; p.classList.remove("is-active"); void p.offsetWidth; p.classList.add("is-active");
+    navLinks.forEach(function(l){
+      var on=l.getAttribute("href").slice(1)===id;
+      l.classList.toggle("active", on); l.setAttribute("aria-selected", String(on));
+    });
+    moveInk();
+    if(!opts.noHash){
+      if(prev===null || opts.replace) history.replaceState(null,"","#"+id);
+      else history.pushState(null,"","#"+id);
+    }
+    closeM();
+    window.scrollTo(0,0);
+    if(opts.focusName){ var n=document.getElementById("f-name"); setTimeout(function(){ n && n.focus({preventScroll:true}); }, reduce?0:280); }
+    else if(opts.focus){ p.focus({preventScroll:true}); }
+  }
+  window.showPanel=showPanel;
+
+  /* любая ссылка вида #раздел открывает нужную панель */
+  document.addEventListener("click", function(e){
+    var a=e.target.closest('a[href^="#"]'); if(!a||e.metaKey||e.ctrlKey||e.shiftKey) return;
+    var id=a.getAttribute("href").slice(1); if(!byId[id]) return;
+    e.preventDefault();
+    showPanel(id,{focus:a.getAttribute("role")!=="tab"});
+  });
+  window.addEventListener("popstate", function(){
+    var id=location.hash.slice(1);
+    showPanel(byId[id]?id:order[0], {noHash:true});
+  });
+  window.addEventListener("resize", moveInk);
+
+  /* клавиши-стрелки по стандарту вкладок */
+  nav.addEventListener("keydown", function(e){
+    var i=navLinks.indexOf(document.activeElement), n=navLinks.length, to;
+    if(i<0) return;
+    if(e.key==="ArrowRight") to=(i+1)%n; else if(e.key==="ArrowLeft") to=(i-1+n)%n;
+    else if(e.key==="Home") to=0; else if(e.key==="End") to=n-1; else return;
+    e.preventDefault(); navLinks[to].focus(); navLinks[to].click();
+  });
+
+  /* стартовая панель (учитывает #раздел в адресе) */
+  var start=location.hash.slice(1);
+  showPanel(byId[start]?start:"home", {replace:true});
 })();
 </script>
 </body>
