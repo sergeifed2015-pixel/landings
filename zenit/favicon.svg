@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" role="img" aria-label="ЗЕНИТ">
+  <rect width="32" height="32" rx="8" fill="#0D1230"/>
+  <path d="M16 4 L18.3 12.8 L27 16 L18.3 19.2 L16 28 L13.7 19.2 L5 16 L13.7 12.8 Z" fill="#5BE0E6"/>
+  <circle cx="24.5" cy="8" r="1.5" fill="#F3CD86"/>
+</svg>

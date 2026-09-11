@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="ru" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>document.documentElement.className="js"</script>
+<title>ЗЕНИТ — планетарий и обсерватория</title>
+<meta name="description" content="Планетарий и обсерватория ЗЕНИТ: купольные шоу 4K, наблюдения в телескоп, лекции и программы для детей. Расписание, билеты онлайн, абонементы.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" media="print" onload="this.media='all'" href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"></noscript>
+<style>
+:root{
+  --void:#080B1E; --night:#0D1230; --panel:#141B3D;
+  --star:#EEF2FF; --mist:#98A3D6; --dim:#6B76A8;
+  --cyan:#5BE0E6; --gold:#F3CD86; --violet:#9A8CF2;
+  --card:rgba(255,255,255,.04); --card-2:rgba(255,255,255,.07);
+  --line:rgba(234,240,255,.12); --line-soft:rgba(234,240,255,.07);
+  --ink:#080B1E;
+  --serif:"Lora",Georgia,serif;
+  --sans:"Manrope",system-ui,-apple-system,sans-serif;
+  --gap:clamp(66px,8vw,124px);
+  --edge:clamp(18px,5vw,64px);
+  --hh:68px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--void);color:var(--star);
+  font-family:var(--sans);font-size:16px;line-height:1.62;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+::selection{background:var(--cyan);color:var(--ink)}
+a{color:inherit;text-decoration:none}
+img,svg,canvas{display:block;max-width:100%}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 var(--edge)}
+h1,h2,h3{margin:0;font-family:var(--serif);font-weight:600;line-height:1.08;letter-spacing:-.01em}
+p{margin:0}
+.eyebrow{font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--cyan)}
+
+/* небо */
+#sky{position:fixed;inset:0;z-index:-2;background:
+  radial-gradient(120% 80% at 78% -10%,rgba(154,140,242,.22),transparent 55%),
+  radial-gradient(90% 70% at 12% 8%,rgba(91,224,230,.10),transparent 50%),
+  linear-gradient(180deg,#0A0E24 0%,#080B1E 60%,#070A18 100%)}
+.sky-tint{position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:linear-gradient(180deg,rgba(8,11,30,.16),rgba(8,11,30,.42))}
+
+/* прелоадер */
+.loader{position:fixed;inset:0;z-index:200;display:grid;place-items:center;background:var(--void);
+  transition:opacity .7s ease .1s,visibility 0s .85s}
+.no-js .loader{display:none}
+.is-loaded .loader{opacity:0;visibility:hidden}
+.js:not(.is-loaded) body{overflow:hidden}
+.loader-in{display:flex;flex-direction:column;align-items:center;gap:16px}
+.loader-logo{display:flex;align-items:center;gap:12px;font-weight:800;font-size:24px;letter-spacing:.24em}
+.loader-bar{width:170px;height:2px;border-radius:2px;background:var(--line);overflow:hidden}
+.loader-bar i{display:block;height:100%;width:100%;background:var(--cyan);transform:scaleX(0);transform-origin:left;
+  animation:lbar 1.4s ease forwards}
+@keyframes lbar{to{transform:scaleX(1)}}
+
+/* шапка */
+.top{position:sticky;top:0;z-index:80;background:rgba(8,11,30,.6);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line-soft)}
+.top-in{display:flex;align-items:center;gap:20px;height:var(--hh)}
+.logo{display:flex;align-items:center;gap:11px}
+.logo svg{width:32px;height:32px;flex:none}
+.logo b{font-weight:800;font-size:20px;letter-spacing:.22em}
+.nav{display:flex;gap:26px;margin-left:auto;position:relative}
+.nav a{font-size:14.5px;font-weight:600;color:var(--mist);padding:6px 0;transition:color .2s}
+.nav a:hover,.nav a.active{color:var(--star)}
+.ink{position:absolute;bottom:0;height:2px;border-radius:2px;background:var(--cyan);width:0;left:0;
+  transition:left .3s ease,width .3s ease;pointer-events:none;box-shadow:0 0 10px var(--cyan)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;font-family:var(--sans);
+  font-weight:700;font-size:15px;border:0;border-radius:999px;padding:13px 24px;cursor:pointer;
+  transition:transform .15s,background .2s,box-shadow .2s,border-color .2s;text-align:center;white-space:nowrap}
+.btn:active{transform:translateY(1px)}
+.btn-cyan{background:var(--cyan);color:var(--ink);box-shadow:0 10px 30px -12px rgba(91,224,230,.9)}
+.btn-cyan:hover{box-shadow:0 12px 34px -10px rgba(91,224,230,1);transform:translateY(-1px)}
+.btn-ghost{background:transparent;color:var(--star);border:1px solid var(--line)}
+.btn-ghost:hover{background:var(--card-2);border-color:var(--mist)}
+.btn-head{margin-left:16px;padding:10px 20px}
+.burger{display:none;margin-left:auto;width:44px;height:44px;border:1px solid var(--line);border-radius:12px;
+  background:var(--card);color:var(--star);cursor:pointer;align-items:center;justify-content:center}
+.burger svg{width:22px;height:22px}
+
+/* секции */
+section{position:relative;scroll-margin-top:calc(var(--hh) + 8px)}
+.sec{padding:var(--gap) 0;border-top:1px solid var(--line-soft)}
+.sec-head{max-width:62ch}
+.sec-head h2{font-size:clamp(30px,4.6vw,52px);margin-top:14px}
+.sec-head p{margin-top:16px;color:var(--mist);font-size:17px}
+.reveal{opacity:0;transform:translateY(18px)}
+.reveal.in{opacity:1;transform:none;transition:opacity .6s ease,transform .6s ease}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none}}
+
+/* hero */
+.hero{padding:clamp(48px,7vw,92px) 0 var(--gap)}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center}
+.hero h1{font-size:clamp(42px,6.6vw,78px);font-weight:600}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero .lead{max-width:46ch;margin-top:22px;font-size:clamp(16px,1.5vw,19px);color:#C7CFF2}
+.hero-cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:32px}
+.hero-stats{display:flex;flex-wrap:wrap;gap:30px;margin-top:44px}
+.hero-stats b{display:block;font-family:var(--serif);font-size:clamp(26px,3.4vw,38px);font-weight:600}
+.hero-stats span{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+
+/* карточка "небо сегодня" */
+.sky-card{background:linear-gradient(180deg,rgba(20,27,61,.72),rgba(13,18,48,.72));backdrop-filter:blur(8px);
+  border:1px solid var(--line);border-radius:22px;padding:26px;position:relative;overflow:hidden}
+.sky-card::after{content:"";position:absolute;inset:0;background:radial-gradient(80% 60% at 85% 10%,rgba(154,140,242,.22),transparent 60%);pointer-events:none}
+.sky-card .k{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--cyan);font-weight:700}
+.moon-row{display:flex;align-items:center;gap:18px;margin-top:16px}
+.moon{width:74px;height:74px;flex:none;filter:drop-shadow(0 0 18px rgba(243,205,134,.35))}
+.moon-info b{font-family:var(--serif);font-size:22px;font-weight:600}
+.moon-info span{display:block;color:var(--mist);font-size:14px;margin-top:2px}
+.sky-list{margin-top:20px;border-top:1px solid var(--line-soft);padding-top:16px;display:flex;flex-direction:column;gap:12px}
+.sky-list div{display:flex;justify-content:space-between;gap:14px;font-size:14.5px}
+.sky-list span{color:var(--mist)}
+.sky-list b{font-weight:700}
+.sky-list .cy{color:var(--cyan)}
+.constellation{position:absolute;top:-26px;right:-10px;width:190px;opacity:.5;pointer-events:none}
+
+/* вкладки */
+.tabs{display:flex;flex-wrap:wrap;gap:10px;margin:32px 0 30px}
+.tab{font-family:var(--sans);font-weight:700;font-size:14.5px;color:var(--mist);cursor:pointer;
+  background:var(--card);border:1px solid var(--line);border-radius:999px;padding:11px 20px;transition:.2s}
+.tab:hover{color:var(--star)}
+.tab.active{background:var(--star);color:var(--ink);border-color:var(--star)}
+.tabpanel{display:none;animation:fade .4s ease both}
+.tabpanel.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.grid{display:grid;gap:18px}
+.grid-3{grid-template-columns:repeat(3,1fr)}
+.grid-4{grid-template-columns:repeat(4,1fr)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:26px;transition:border-color .2s,transform .2s,background .2s}
+.card:hover{border-color:rgba(91,224,230,.4);transform:translateY(-3px)}
+.card .meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.pill{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--cyan);
+  background:rgba(91,224,230,.1);border:1px solid rgba(91,224,230,.22);border-radius:999px;padding:5px 11px}
+.pill.g{color:var(--gold);background:rgba(243,205,134,.1);border-color:rgba(243,205,134,.24)}
+.pill.v{color:var(--violet);background:rgba(154,140,242,.12);border-color:rgba(154,140,242,.26)}
+.card h3{font-family:var(--serif);font-size:22px}
+.card .price{font-weight:700;color:var(--gold);margin-top:6px}
+.card p{margin-top:12px;color:var(--mist);font-size:14.5px}
+.card .cbtn{margin-top:20px}
+
+/* расписание */
+.sched{border:1px solid var(--line);border-radius:18px;overflow:hidden;background:rgba(255,255,255,.02)}
+.slot{display:grid;grid-template-columns:96px 1fr auto auto;gap:20px;align-items:center;padding:18px 22px;border-bottom:1px solid var(--line-soft)}
+.slot:last-child{border-bottom:0}
+.slot .t{font-family:var(--serif);font-size:20px;font-weight:600}
+.slot .nm b{font-weight:700}
+.slot .nm small{display:block;color:var(--mist);font-size:13px}
+.slot .hall{font-size:13px;color:var(--mist)}
+.slot .seats{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--cyan);white-space:nowrap}
+.slot.few .seats{color:var(--gold)}
+.slot.sold .seats{color:var(--dim)}
+.slot.sold{opacity:.55}
+
+/* фичи */
+.feat-card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:26px}
+.feat-card .ic{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;
+  background:rgba(91,224,230,.1);border:1px solid rgba(91,224,230,.22);margin-bottom:16px}
+.feat-card .ic svg{width:24px;height:24px;stroke:var(--cyan);fill:none;stroke-width:1.8}
+.feat-card h3{font-family:var(--serif);font-size:19px}
+.feat-card p{margin-top:8px;color:var(--mist);font-size:14px}
+
+/* билеты — калькулятор */
+.book{display:grid;grid-template-columns:1.05fr .95fr;gap:34px;align-items:start}
+.book-card{background:linear-gradient(180deg,rgba(20,27,61,.7),rgba(13,18,48,.7));backdrop-filter:blur(8px);
+  border:1px solid var(--line);border-radius:22px;padding:clamp(24px,3vw,34px)}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:13px;font-weight:700;color:var(--mist);margin-bottom:7px}
+.field select,.field input{width:100%;font-family:inherit;font-size:15px;color:var(--star);
+  background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:12px;padding:13px 14px}
+.field select{appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%2398A3D6' stroke-width='2'><path d='M4 6l4 4 4-4'/></svg>");background-repeat:no-repeat;background-position:right 14px center}
+.field select:focus,.field input:focus{border-color:var(--cyan);outline:none}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.qty{display:flex;flex-direction:column;gap:10px;margin:6px 0 4px}
+.qrow{display:flex;align-items:center;justify-content:space-between;gap:14px;
+  background:rgba(255,255,255,.03);border:1px solid var(--line-soft);border-radius:12px;padding:12px 14px}
+.qrow .lbl b{font-weight:700}
+.qrow .lbl small{display:block;color:var(--mist);font-size:12.5px}
+.stepper{display:flex;align-items:center;gap:12px}
+.stepper button{width:34px;height:34px;border-radius:9px;border:1px solid var(--line);background:var(--card);
+  color:var(--star);font-size:20px;line-height:1;cursor:pointer;transition:.15s}
+.stepper button:hover{border-color:var(--cyan);color:var(--cyan)}
+.stepper button:disabled{opacity:.35;cursor:not-allowed}
+.stepper .n{min-width:26px;text-align:center;font-weight:700;font-variant-numeric:tabular-nums}
+.total{display:flex;align-items:baseline;justify-content:space-between;gap:14px;margin:22px 0 4px;
+  padding-top:18px;border-top:1px solid var(--line)}
+.total span{color:var(--mist);font-size:14px}
+.total b{font-family:var(--serif);font-size:32px;font-weight:600;color:var(--gold)}
+.err{color:var(--gold);font-size:13.5px;min-height:0;margin:6px 0}
+.consent{font-size:12.5px;color:var(--dim);margin-top:12px}
+.done{display:none;text-align:center;padding:12px 4px}
+.done.show{display:block;animation:fade .4s ease both}
+.done .ok{width:66px;height:66px;margin:0 auto 18px;border-radius:50%;background:rgba(91,224,230,.14);display:grid;place-items:center}
+.done .ok svg{width:32px;height:32px;stroke:var(--cyan);fill:none;stroke-width:2.4}
+.done h3{font-family:var(--serif);font-size:26px}
+.done p{margin-top:10px;color:var(--mist)}
+.done .sum{margin:20px auto 0;max-width:360px;text-align:left;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:14px;padding:16px 18px;font-size:14.5px}
+.done .sum div{display:flex;justify-content:space-between;gap:14px;padding:5px 0}
+.done .sum span{color:var(--mist)}
+.book-side .info{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px}
+.book-side .info+.info{margin-top:14px}
+.book-side h3{font-family:var(--serif);font-size:18px}
+.book-side p{margin-top:8px;color:var(--mist);font-size:14px}
+
+/* абонементы */
+.plan{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:28px;display:flex;flex-direction:column}
+.plan.hl{background:linear-gradient(180deg,rgba(91,224,230,.12),rgba(91,224,230,.02));border-color:rgba(91,224,230,.4)}
+.plan h3{font-family:var(--serif);font-size:22px}
+.plan .p{font-family:var(--serif);font-size:34px;font-weight:600;margin:10px 0 2px}
+.plan .p small{font-family:var(--sans);font-size:14px;color:var(--mist);font-weight:500}
+.plan ul{list-style:none;padding:0;margin:18px 0 24px;display:flex;flex-direction:column;gap:11px}
+.plan li{position:relative;padding-left:26px;font-size:14.5px;color:#D3DAF5}
+.plan li::before{content:"";position:absolute;left:0;top:7px;width:13px;height:8px;border-left:2px solid var(--cyan);border-bottom:2px solid var(--cyan);transform:rotate(-45deg)}
+.plan .btn{margin-top:auto}
+
+/* FAQ */
+.faq details{border-bottom:1px solid var(--line-soft)}
+.faq summary{list-style:none;cursor:pointer;padding:20px 0;display:flex;justify-content:space-between;gap:20px;align-items:center;font-weight:700;font-size:17px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary .pl{position:relative;width:18px;height:18px;flex:none}
+.faq summary .pl::before,.faq summary .pl::after{content:"";position:absolute;background:var(--cyan);border-radius:2px}
+.faq summary .pl::before{left:8px;top:0;width:2px;height:18px;transition:transform .25s}
+.faq summary .pl::after{left:0;top:8px;width:18px;height:2px}
+.faq details[open] summary .pl::before{transform:scaleY(0)}
+.faq p{padding:0 0 20px;color:var(--mist);max-width:72ch}
+
+/* контакты */
+.contacts{display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:start}
+.cinfo{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:26px}
+.cinfo .k{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--mist)}
+.cinfo .v{font-weight:700;margin-top:5px}
+.map{border:1px solid var(--line);border-radius:18px;min-height:250px;display:grid;place-items:center;
+  color:var(--mist);text-align:center;padding:24px;background:
+   radial-gradient(circle at 28% 34%,rgba(91,224,230,.14),transparent 42%),
+   radial-gradient(circle at 72% 68%,rgba(154,140,242,.16),transparent 46%),rgba(255,255,255,.02)}
+
+/* футер */
+.foot{border-top:1px solid var(--line-soft)}
+.foot-in{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center;padding:28px 0;color:var(--dim);font-size:13.5px}
+
+/* мобильное меню */
+.scrim{position:fixed;inset:0;background:rgba(4,6,16,.66);z-index:90;opacity:0;visibility:hidden;transition:.25s}
+.scrim.show{opacity:1;visibility:visible}
+.mobile{position:fixed;top:0;right:0;height:100%;width:min(320px,86%);z-index:95;background:#0C1130;
+  border-left:1px solid var(--line);padding:26px 24px;transform:translateX(100%);transition:transform .3s ease;
+  display:flex;flex-direction:column;gap:4px}
+.mobile.open{transform:none}
+.mobile .mh{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.mobile a{padding:13px 0;border-bottom:1px solid var(--line-soft);font-weight:600}
+.mobile .btn{margin-top:20px}
+.mclose{width:40px;height:40px;border:1px solid var(--line);border-radius:10px;background:transparent;color:var(--star);cursor:pointer}
+
+@media(max-width:920px){
+  .hero-grid{grid-template-columns:1fr;gap:34px}
+  .grid-4{grid-template-columns:1fr 1fr}
+  .grid-3{grid-template-columns:1fr 1fr}
+  .book,.contacts{grid-template-columns:1fr}
+}
+@media(max-width:680px){
+  .nav,.btn-head{display:none}
+  .burger{display:inline-flex}
+  .grid-3,.grid-4,.cinfo{grid-template-columns:1fr}
+  .slot{grid-template-columns:74px 1fr;grid-template-areas:"t nm" "t hall" "t seats";gap:6px 16px}
+  .slot .hall,.slot .seats{justify-self:start}
+}
+</style>
+</head>
+<body>
+
+<div class="loader" id="loader" aria-hidden="true">
+  <div class="loader-in">
+    <div class="loader-logo">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true">
+        <path d="M16 3 L18.4 12.6 L28 16 L18.4 19.4 L16 29 L13.6 19.4 L4 16 L13.6 12.6 Z" fill="#5BE0E6"/>
+        <circle cx="25" cy="7" r="1.6" fill="#F3CD86"/>
+      </svg>ЗЕНИТ
+    </div>
+    <span class="loader-bar"><i></i></span>
+  </div>
+</div>
+
+<canvas id="sky" aria-hidden="true"></canvas>
+<div class="sky-tint" aria-hidden="true"></div>
+
+<header class="top">
+  <div class="wrap top-in">
+    <a class="logo" href="#top" aria-label="ЗЕНИТ, наверх">
+      <svg viewBox="0 0 32 32" aria-hidden="true">
+        <path d="M16 3 L18.4 12.6 L28 16 L18.4 19.4 L16 29 L13.6 19.4 L4 16 L13.6 12.6 Z" fill="#5BE0E6"/>
+        <circle cx="25" cy="7" r="1.6" fill="#F3CD86"/>
+      </svg>
+      <b>ЗЕНИТ</b>
+    </a>
+    <nav class="nav" id="nav" aria-label="Разделы">
+      <a href="#programs">Программы</a>
+      <a href="#schedule">Расписание</a>
+      <a href="#tickets">Билеты</a>
+      <a href="#passes">Абонементы</a>
+      <a href="#contacts">Контакты</a>
+      <span class="ink" id="ink" aria-hidden="true"></span>
+    </nav>
+    <button class="btn btn-cyan btn-head" data-book>Купить билет</button>
+    <button class="burger" id="burger" aria-label="Меню" aria-expanded="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="scrim" id="scrim"></div>
+<aside class="mobile" id="mobile" aria-hidden="true">
+  <div class="mh"><b style="letter-spacing:.22em">ЗЕНИТ</b><button class="mclose" id="mclose" aria-label="Закрыть">✕</button></div>
+  <a href="#programs">Программы</a>
+  <a href="#schedule">Расписание</a>
+  <a href="#tickets">Билеты</a>
+  <a href="#passes">Абонементы</a>
+  <a href="#contacts">Контакты</a>
+  <a href="tel:+74950000000">+7 495 000-00-00</a>
+  <button class="btn btn-cyan" data-book>Купить билет</button>
+</aside>
+
+<main id="top">
+  <!-- hero -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow">Планетарий и обсерватория · Москва</p>
+        <h1>Небо ближе, <em>чем кажется</em></h1>
+        <p class="lead">Купольные шоу в разрешении 4K, наблюдения в настоящий телескоп и лекции астрономов.
+          Сеансы каждый день — приходите смотреть на звёзды, планеты и далёкие галактики.</p>
+        <div class="hero-cta">
+          <button class="btn btn-cyan" data-book>Купить билет</button>
+          <a class="btn btn-ghost" href="#schedule">Расписание сеансов</a>
+        </div>
+        <div class="hero-stats">
+          <div><b>4K</b><span>купол 18 метров</span></div>
+          <div><b>320 мм</b><span>зеркало телескопа</span></div>
+          <div><b>7</b><span>программ в афише</span></div>
+          <div><b>с 1962</b><span>года на небе</span></div>
+        </div>
+      </div>
+
+      <div class="sky-card reveal">
+        <svg class="constellation" viewBox="0 0 200 120" fill="none" aria-hidden="true">
+          <path d="M20 40 L28 84 L74 96 L84 62 L20 40 M84 62 L120 52 L156 44 L188 30"
+                stroke="#9A8CF2" stroke-width="1.4" opacity=".7"/>
+          <g fill="#EEF2FF">
+            <circle cx="20" cy="40" r="2.6"/><circle cx="28" cy="84" r="2.2"/><circle cx="74" cy="96" r="2.2"/>
+            <circle cx="84" cy="62" r="2.4"/><circle cx="120" cy="52" r="2.2"/><circle cx="156" cy="44" r="2.6"/>
+            <circle cx="188" cy="30" r="2.2"/>
+          </g>
+        </svg>
+        <div class="k">Небо сегодня</div>
+        <div class="moon-row">
+          <svg class="moon" id="moon" viewBox="0 0 100 100" aria-hidden="true"></svg>
+          <div class="moon-info">
+            <b id="moonName">Луна</b>
+            <span id="moonInfo">освещённость —</span>
+          </div>
+        </div>
+        <div class="sky-list">
+          <div><span>Восход Солнца</span><b>07:42</b></div>
+          <div><span>Заход Солнца</span><b>16:58</b></div>
+          <div><span>Заметно этой ночью</span><b class="cy">Юпитер · Сатурн</b></div>
+          <div><span>Ближайший сеанс</span><b>сегодня 19:00</b></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- программы -->
+  <section class="sec" id="programs">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="eyebrow">Афиша</p>
+        <h2>Программы на любой возраст</h2>
+        <p>Выберите формат — от полнокупольного кино до живого наблюдения в телескоп на открытой площадке.</p>
+      </div>
+
+      <div class="tabs reveal" role="tablist" aria-label="Тип программы">
+        <button class="tab active" data-tab="dome" role="tab">Купольные шоу</button>
+        <button class="tab" data-tab="scope" role="tab">Наблюдения</button>
+        <button class="tab" data-tab="kids" role="tab">Детям</button>
+        <button class="tab" data-tab="lect" role="tab">Лекции</button>
+      </div>
+
+      <div class="tabpanel active" data-panel="dome">
+        <div class="grid grid-3">
+          <div class="card"><div class="meta"><span class="pill">4K · 40 мин</span><span class="pill g">6+</span></div><h3>Рождение Вселенной</h3><div class="price">от 700 ₽</div><p>От Большого взрыва до первых галактик — полнокупольное путешествие сквозь 13,8 миллиарда лет.</p><button class="btn btn-ghost cbtn" data-book data-prog="Купольное шоу «Рождение Вселенной»">Взять билет</button></div>
+          <div class="card"><div class="meta"><span class="pill">4K · 35 мин</span><span class="pill g">6+</span></div><h3>Тайны Солнечной системы</h3><div class="price">от 700 ₽</div><p>Пролёт мимо всех планет: кольца Сатурна, вулканы Ио и ледяные океаны Европы.</p><button class="btn btn-ghost cbtn" data-book data-prog="Купольное шоу «Тайны Солнечной системы»">Взять билет</button></div>
+          <div class="card"><div class="meta"><span class="pill">4K · 45 мин</span><span class="pill v">12+</span></div><h3>Чёрные дыры</h3><div class="price">от 800 ₽</div><p>Что происходит у горизонта событий и как мы «увидели» тень чёрной дыры.</p><button class="btn btn-ghost cbtn" data-book data-prog="Купольное шоу «Чёрные дыры»">Взять билет</button></div>
+        </div>
+      </div>
+      <div class="tabpanel" data-panel="scope">
+        <div class="grid grid-3">
+          <div class="card"><div class="meta"><span class="pill">60 мин</span><span class="pill g">6+</span></div><h3>Вечер у телескопа</h3><div class="price">от 900 ₽</div><p>Наблюдение Луны, планет и двойных звёзд в 320-мм телескоп с астрономом.</p><button class="btn btn-ghost cbtn" data-book data-prog="Наблюдение «Вечер у телескопа»">Взять билет</button></div>
+          <div class="card"><div class="meta"><span class="pill">90 мин</span><span class="pill v">14+</span></div><h3>Дальний космос</h3><div class="price">от 1 100 ₽</div><p>Туманности, звёздные скопления и галактики — для тех, кто хочет углубиться.</p><button class="btn btn-ghost cbtn" data-book data-prog="Наблюдение «Дальний космос»">Взять билет</button></div>
+          <div class="card"><div class="meta"><span class="pill">днём</span><span class="pill g">6+</span></div><h3>Солнце в деталях</h3><div class="price">от 700 ₽</div><p>Безопасное наблюдение Солнца в специальный телескоп: пятна и протуберанцы.</p><button class="btn btn-ghost cbtn" data-book data-prog="Наблюдение «Солнце в деталях»">Взять билет</button></div>
+        </div>
+      </div>
+      <div class="tabpanel" data-panel="kids">
+        <div class="grid grid-3">
+          <div class="card"><div class="meta"><span class="pill g">3+</span><span class="pill">30 мин</span></div><h3>Как Луна потеряла тапочки</h3><div class="price">от 550 ₽</div><p>Добрая купольная сказка для самых маленьких с яркими звёздами и музыкой.</p><button class="btn btn-ghost cbtn" data-book data-prog="Детям «Как Луна потеряла тапочки»">Взять билет</button></div>
+          <div class="card"><div class="meta"><span class="pill g">7+</span><span class="pill">50 мин</span></div><h3>Юный космонавт</h3><div class="price">от 750 ₽</div><p>Интерактивная программа: собираем ракету, «летим» на МКС и едим космос-еду.</p><button class="btn btn-ghost cbtn" data-book data-prog="Детям «Юный космонавт»">Взять билет</button></div>
+          <div class="card"><div class="meta"><span class="pill g">7+</span><span class="pill v">выходные</span></div><h3>Семейное наблюдение</h3><div class="price">от 600 ₽</div><p>Родители и дети вместе смотрят на Луну и учатся находить созвездия.</p><button class="btn btn-ghost cbtn" data-book data-prog="Детям «Семейное наблюдение»">Взять билет</button></div>
+        </div>
+      </div>
+      <div class="tabpanel" data-panel="lect">
+        <div class="grid grid-3">
+          <div class="card"><div class="meta"><span class="pill v">16+</span><span class="pill">80 мин</span></div><h3>Есть ли жизнь на экзопланетах</h3><div class="price">от 600 ₽</div><p>Как ищут другие Земли и что уже нашли телескопы Kepler и James Webb.</p><button class="btn btn-ghost cbtn" data-book data-prog="Лекция «Жизнь на экзопланетах»">Взять билет</button></div>
+          <div class="card"><div class="meta"><span class="pill v">16+</span><span class="pill">80 мин</span></div><h3>История космонавтики</h3><div class="price">от 600 ₽</div><p>От Спутника до многоразовых ракет — люди и машины, покорившие орбиту.</p><button class="btn btn-ghost cbtn" data-book data-prog="Лекция «История космонавтики»">Взять билет</button></div>
+          <div class="card"><div class="meta"><span class="pill v">18+</span><span class="pill g">четверг</span></div><h3>Астрономия и вино</h3><div class="price">от 1 400 ₽</div><p>Вечерняя лекция с дегустацией под куполом — наука в расслабленном формате.</p><button class="btn btn-ghost cbtn" data-book data-prog="Лекция «Астрономия и вино»">Взять билет</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- расписание -->
+  <section class="sec" id="schedule">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="eyebrow">Сеансы</p>
+        <h2>Расписание</h2>
+        <p>Наблюдения зависят от погоды: при облачности заменяем сеанс купольной программой или переносим билет.</p>
+      </div>
+
+      <div class="tabs reveal" role="tablist" aria-label="День">
+        <button class="tab active" data-tab="d1" role="tab">Сегодня</button>
+        <button class="tab" data-tab="d2" role="tab">Завтра</button>
+        <button class="tab" data-tab="d3" role="tab">Выходные</button>
+      </div>
+
+      <div class="tabpanel active" data-panel="d1">
+        <div class="sched">
+          <div class="slot"><div class="t">12:00</div><div class="nm"><b>Тайны Солнечной системы</b><small>купольное шоу 4K</small></div><div class="hall">Большой купол</div><span class="seats">18 мест</span></div>
+          <div class="slot few"><div class="t">14:30</div><div class="nm"><b>Юный космонавт</b><small>детская программа</small></div><div class="hall">Малый зал</div><span class="seats">4 места</span></div>
+          <div class="slot"><div class="t">17:00</div><div class="nm"><b>Чёрные дыры</b><small>купольное шоу 4K</small></div><div class="hall">Большой купол</div><span class="seats">30 мест</span></div>
+          <div class="slot"><div class="t">19:00</div><div class="nm"><b>Вечер у телескопа</b><small>наблюдение, при ясном небе</small></div><div class="hall">Площадка</div><span class="seats">12 мест</span></div>
+          <div class="slot sold"><div class="t">21:00</div><div class="nm"><b>Дальний космос</b><small>наблюдение</small></div><div class="hall">Площадка</div><span class="seats">мест нет</span></div>
+        </div>
+      </div>
+      <div class="tabpanel" data-panel="d2">
+        <div class="sched">
+          <div class="slot"><div class="t">11:00</div><div class="nm"><b>Как Луна потеряла тапочки</b><small>для малышей 3+</small></div><div class="hall">Малый зал</div><span class="seats">20 мест</span></div>
+          <div class="slot"><div class="t">13:00</div><div class="nm"><b>Рождение Вселенной</b><small>купольное шоу 4K</small></div><div class="hall">Большой купол</div><span class="seats">30 мест</span></div>
+          <div class="slot few"><div class="t">18:00</div><div class="nm"><b>Есть ли жизнь на экзопланетах</b><small>лекция</small></div><div class="hall">Лекторий</div><span class="seats">6 мест</span></div>
+          <div class="slot"><div class="t">20:00</div><div class="nm"><b>Вечер у телескопа</b><small>наблюдение</small></div><div class="hall">Площадка</div><span class="seats">12 мест</span></div>
+        </div>
+      </div>
+      <div class="tabpanel" data-panel="d3">
+        <div class="sched">
+          <div class="slot"><div class="t">10:30</div><div class="nm"><b>Семейное наблюдение</b><small>родители и дети</small></div><div class="hall">Площадка</div><span class="seats">16 мест</span></div>
+          <div class="slot"><div class="t">13:00</div><div class="nm"><b>Тайны Солнечной системы</b><small>купольное шоу 4K</small></div><div class="hall">Большой купол</div><span class="seats">30 мест</span></div>
+          <div class="slot"><div class="t">16:00</div><div class="nm"><b>Солнце в деталях</b><small>дневное наблюдение</small></div><div class="hall">Площадка</div><span class="seats">10 мест</span></div>
+          <div class="slot few"><div class="t">21:00</div><div class="nm"><b>Астрономия и вино</b><small>лекция 18+</small></div><div class="hall">Большой купол</div><span class="seats">8 мест</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- билеты -->
+  <section class="sec" id="tickets">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="eyebrow">Билеты онлайн</p>
+        <h2>Соберите свой сеанс</h2>
+        <p>Выберите программу и количество билетов — стоимость посчитается сразу. Бронь держим 30 минут до оплаты на входе.</p>
+      </div>
+      <div class="book reveal" style="margin-top:34px">
+        <div class="book-card">
+          <form id="bookForm" novalidate>
+            <div class="row2">
+              <div class="field"><label for="f-prog">Программа</label>
+                <select id="f-prog">
+                  <option>Купольное шоу «Рождение Вселенной»</option>
+                  <option>Купольное шоу «Тайны Солнечной системы»</option>
+                  <option>Купольное шоу «Чёрные дыры»</option>
+                  <option>Наблюдение «Вечер у телескопа»</option>
+                  <option>Наблюдение «Дальний космос»</option>
+                  <option>Детям «Юный космонавт»</option>
+                  <option>Лекция «Астрономия и вино»</option>
+                </select>
+              </div>
+              <div class="field"><label for="f-date">Дата</label><input id="f-date" type="date"></div>
+            </div>
+            <div class="field"><label for="f-time">Сеанс</label>
+              <select id="f-time"><option>12:00</option><option>14:30</option><option selected>17:00</option><option>19:00</option><option>21:00</option></select>
+            </div>
+
+            <div class="field" style="margin-bottom:6px"><label>Билеты</label></div>
+            <div class="qty" id="qty">
+              <div class="qrow" data-type="adult" data-price="700">
+                <div class="lbl"><b>Взрослый</b><small>700 ₽</small></div>
+                <div class="stepper"><button type="button" data-d="-1" aria-label="минус">−</button><span class="n">1</span><button type="button" data-d="1" aria-label="плюс">+</button></div>
+              </div>
+              <div class="qrow" data-type="child" data-price="450">
+                <div class="lbl"><b>Детский</b><small>6–14 лет · 450 ₽</small></div>
+                <div class="stepper"><button type="button" data-d="-1" aria-label="минус">−</button><span class="n">0</span><button type="button" data-d="1" aria-label="плюс">+</button></div>
+              </div>
+              <div class="qrow" data-type="conc" data-price="500">
+                <div class="lbl"><b>Льготный</b><small>студенты, пенсионеры · 500 ₽</small></div>
+                <div class="stepper"><button type="button" data-d="-1" aria-label="минус">−</button><span class="n">0</span><button type="button" data-d="1" aria-label="плюс">+</button></div>
+              </div>
+            </div>
+
+            <div class="total"><span id="totalCount">1 билет</span><b id="totalSum">700 ₽</b></div>
+            <div class="err" id="formErr"></div>
+            <button class="btn btn-cyan" type="submit" style="width:100%">Оформить билеты</button>
+            <p class="consent">Оплата на входе за 30 минут до сеанса. Возврат — не позднее чем за 2 часа.</p>
+          </form>
+
+          <div class="done" id="bookDone">
+            <div class="ok"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+            <h3>Бронь создана!</h3>
+            <p id="doneMsg">Билеты ждут вас на кассе.</p>
+            <div class="sum" id="doneSum"></div>
+            <button class="btn btn-ghost" id="bookAgain" style="margin-top:20px">Забронировать ещё</button>
+          </div>
+        </div>
+
+        <div class="book-side">
+          <div class="info"><h3>🌦 Погода и наблюдения</h3><p>Сеансы у телескопа зависят от неба. При облачности заменим на купольную программу или перенесём билет.</p></div>
+          <div class="info"><h3>🎟 Как попасть</h3><p>Приходите за 15 минут до сеанса. Электронную бронь показывать не нужно — назовём вас на кассе по имени.</p></div>
+          <div class="info"><h3>♿ Доступная среда</h3><p>Купол и лекторий оборудованы для маломобильных гостей. Напишите заранее — поможем с местами.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- фичи -->
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head reveal"><p class="eyebrow">Что внутри</p><h2>Обсерватория как надо</h2></div>
+      <div class="grid grid-4 reveal" style="margin-top:34px">
+        <div class="feat-card"><div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg></div><h3>Купол 18 м</h3><p>Полнокупольная проекция 4K с эффектом полного погружения в звёздное небо.</p></div>
+        <div class="feat-card"><div class="ic"><svg viewBox="0 0 24 24"><path d="M3 21l6-6M14 4l6 6-9 4-1-1-4-9z"/><circle cx="16" cy="8" r="1"/></svg></div><h3>Телескоп 320 мм</h3><p>Профессиональный рефлектор на открытой площадке для живых наблюдений.</p></div>
+        <div class="feat-card"><div class="ic"><svg viewBox="0 0 24 24"><path d="M4 19V5l8 4 8-4v14l-8-4-8 4z"/></svg></div><h3>Лекторий</h3><p>Регулярные лекции астрономов, встречи клуба и научные ток-шоу.</p></div>
+        <div class="feat-card"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l3 3M15 15l3 3M18 6l-3 3M9 15l-3 3"/></svg></div><h3>Кафе «Апогей»</h3><p>Космо-меню и телескоп у окна — переждать облака за чашкой какао.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- абонементы -->
+  <section class="sec" id="passes">
+    <div class="wrap">
+      <div class="sec-head reveal"><p class="eyebrow">Абонементы</p><h2>Для тех, кто возвращается</h2><p>Выгоднее разовых билетов, дарят приоритетную запись и вход на закрытые ночи наблюдений.</p></div>
+      <div class="grid grid-3 reveal" style="margin-top:34px">
+        <div class="plan"><h3>Наблюдатель</h3><div class="p">1 900 ₽<small> / месяц</small></div><ul><li>4 купольных шоу в месяц</li><li>Скидка 20% спутнику</li><li>Кофе в «Апогее» в подарок</li></ul><button class="btn btn-ghost" data-book data-prog="Абонемент «Наблюдатель»">Оформить</button></div>
+        <div class="plan hl"><h3>Астроном</h3><div class="p">3 400 ₽<small> / месяц</small></div><ul><li>Безлимит на купольные шоу</li><li>2 наблюдения в телескоп</li><li>Приоритетная запись на сеансы</li><li>Вход на ночи наблюдений</li></ul><button class="btn btn-cyan" data-book data-prog="Абонемент «Астроном»">Оформить</button></div>
+        <div class="plan"><h3>Семейный</h3><div class="p">4 200 ₽<small> / месяц</small></div><ul><li>До 4 человек, любые программы</li><li>Детские сеансы без ограничений</li><li>Скидка 15% на дни рождения</li></ul><button class="btn btn-ghost" data-book data-prog="Абонемент «Семейный»">Оформить</button></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head reveal"><p class="eyebrow">Вопросы</p><h2>Коротко о важном</h2></div>
+      <div class="faq reveal" style="margin-top:24px">
+        <details open><summary>Что будет, если небо затянет облаками?<span class="pl"></span></summary><p>Наблюдения в телескоп проходят только при ясном небе. Если погода подвела, мы заменяем сеанс купольной программой или переносим билет на другой день — на ваш выбор.</p></details>
+        <details><summary>С какого возраста можно приходить?<span class="pl"></span></summary><p>На детские программы — с 3 лет, на купольные шоу — с 6, на лекции и «Дальний космос» — с 14–16 лет. Возраст указан на карточке каждой программы.</p></details>
+        <details><summary>Нужно ли покупать билет заранее?<span class="pl"></span></summary><p>На популярные вечерние сеансы места заканчиваются быстро, поэтому лучше забронировать онлайн. Бронь держим 30 минут до оплаты на кассе.</p></details>
+        <details><summary>Можно ли фотографировать?<span class="pl"></span></summary><p>Под куполом — без вспышки, чтобы не мешать другим гостям. На площадке у телескопа съёмка приветствуется, поможем настроить телефон для съёмки Луны.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <!-- контакты -->
+  <section class="sec" id="contacts">
+    <div class="wrap">
+      <div class="contacts">
+        <div class="reveal">
+          <p class="eyebrow">Контакты</p>
+          <h2 style="font-size:clamp(28px,4.4vw,46px);margin-top:14px">Ждём вас под звёздным куполом</h2>
+          <div class="cinfo">
+            <div><div class="k">Адрес</div><div class="v">Москва, Садовая-Кудринская, 5<br>планетарий «ЗЕНИТ»</div></div>
+            <div><div class="k">Часы</div><div class="v">Вт–Вс 10:00–22:00<br>понедельник — выходной</div></div>
+            <div><div class="k">Телефон</div><div class="v"><a href="tel:+74950000000">+7 495 000-00-00</a></div></div>
+            <div><div class="k">Telegram</div><div class="v"><a href="https://t.me/zenit_sky">@zenit_sky</a></div></div>
+          </div>
+          <button class="btn btn-cyan" data-book style="margin-top:28px">Купить билет</button>
+        </div>
+        <div class="map reveal">Метро «Баррикадная» · 5 минут пешком<br>парковка и вход со стороны сквера</div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap foot-in">
+    <div style="display:flex;align-items:center;gap:10px">
+      <svg width="24" height="24" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3 L18.4 12.6 L28 16 L18.4 19.4 L16 29 L13.6 19.4 L4 16 L13.6 12.6 Z" fill="#5BE0E6"/><circle cx="25" cy="7" r="1.6" fill="#F3CD86"/></svg>
+      <b style="letter-spacing:.22em">ЗЕНИТ</b> · планетарий и обсерватория
+    </div>
+    <div>© 2026 · Москва · Демо-лендинг</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var root=document.documentElement, reduce=matchMedia("(prefers-reduced-motion:reduce)").matches;
+
+  /* прелоадер */
+  function loaded(){ root.classList.add("is-loaded"); }
+  setTimeout(loaded, 450);
+  document.addEventListener("DOMContentLoaded", loaded);
+  window.addEventListener("load", loaded);
+  setTimeout(loaded, 2500);
+
+  /* ——— звёздное небо на canvas ——— */
+  (function(){
+    var cv=document.getElementById("sky"), ctx=cv.getContext("2d"), w,h,dpr,stars=[],shoot=null,last=0;
+    var COLORS=["#EEF2FF","#EEF2FF","#EEF2FF","#CFE6FF","#F3CD86","#9A8CF2","#5BE0E6"];
+    function resize(){
+      dpr=Math.min(2,window.devicePixelRatio||1);
+      w=cv.width=innerWidth*dpr; h=cv.height=innerHeight*dpr;
+      cv.style.width=innerWidth+"px"; cv.style.height=innerHeight+"px";
+      var n=Math.round(innerWidth*innerHeight/6500);
+      stars=[];
+      for(var i=0;i<n;i++){
+        stars.push({x:Math.random()*w,y:Math.random()*h,
+          r:(Math.random()*1.3+.3)*dpr,
+          c:COLORS[Math.random()*COLORS.length|0],
+          tw:Math.random()*Math.PI*2, sp:Math.random()*1.6+.4,
+          base:Math.random()*.5+.4});
+      }
+    }
+    function star(s,t){
+      var a=s.base+Math.sin(t*0.001*s.sp+s.tw)*0.35;
+      if(a<0)a=0; ctx.globalAlpha=a; ctx.fillStyle=s.c;
+      ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,6.283); ctx.fill();
+      if(s.r>1.1*dpr){ ctx.globalAlpha=a*.25; ctx.beginPath(); ctx.arc(s.x,s.y,s.r*2.6,0,6.283); ctx.fill(); }
+    }
+    function maybeShoot(t){
+      if(shoot||reduce) return;
+      if(Math.random()<0.004){
+        var sx=Math.random()*w*.7+w*.15, sy=Math.random()*h*.4;
+        shoot={x:sx,y:sy,vx:(Math.random()*3+5)*dpr,vy:(Math.random()*1.6+1.4)*dpr,life:0,max:60};
+      }
+    }
+    function drawShoot(){
+      if(!shoot) return;
+      var s=shoot; s.life++;
+      var tx=s.x-s.vx*10, ty=s.y-s.vy*10;
+      var g=ctx.createLinearGradient(s.x,s.y,tx,ty);
+      g.addColorStop(0,"rgba(238,242,255,.9)"); g.addColorStop(1,"rgba(238,242,255,0)");
+      ctx.globalAlpha=1-s.life/s.max; ctx.strokeStyle=g; ctx.lineWidth=1.6*dpr; ctx.lineCap="round";
+      ctx.beginPath(); ctx.moveTo(s.x,s.y); ctx.lineTo(tx,ty); ctx.stroke();
+      s.x+=s.vx; s.y+=s.vy;
+      if(s.life>=s.max) shoot=null;
+    }
+    function frame(t){
+      ctx.clearRect(0,0,w,h);
+      for(var i=0;i<stars.length;i++) star(stars[i], reduce?0:t);
+      maybeShoot(t); drawShoot();
+      ctx.globalAlpha=1;
+      requestAnimationFrame(frame);
+    }
+    resize(); addEventListener("resize", resize);
+    if(reduce){ ctx.clearRect(0,0,w,h); stars.forEach(function(s){star(s,0)}); ctx.globalAlpha=1; }
+    else requestAnimationFrame(frame);
+  })();
+
+  /* ——— фаза Луны от текущей даты ——— */
+  (function(){
+    var now=new Date();
+    var synodic=29.53058867;
+    var ref=Date.UTC(2000,0,6,18,14)/86400000; // известное новолуние в днях
+    var days=now.getTime()/86400000 - ref;
+    var frac=((days%synodic)+synodic)%synodic/synodic; // 0..1
+    var illum=(1-Math.cos(2*Math.PI*frac))/2; // 0 новолуние .. 1 полнолуние
+    var names=["Новолуние","Растущий серп","Первая четверть","Растущая Луна","Полнолуние","Убывающая Луна","Последняя четверть","Убывающий серп"];
+    var idx=Math.round(frac*8)%8;
+    document.getElementById("moonName").textContent=names[idx];
+    document.getElementById("moonInfo").textContent="освещённость "+Math.round(illum*100)+"%";
+    /* рисуем диск с терминатором */
+    var svg=document.getElementById("moon"), R=40, cx=50, cy=50;
+    var lit = frac<0.5 ? "right" : "left"; // растущая — освещена правая часть
+    // ширина освещённого серпа через параметр k=cos(phase angle)
+    var k=Math.cos(2*Math.PI*frac); // 1 новолуние .. -1 полнолуние
+    var rx=Math.abs(k)*R;
+    var termSweep = (frac<0.5)?1:0;
+    var outerSweep = (frac<0.5)?1:0;
+    // база — тёмный диск, поверх — освещённая область
+    var dark='<circle cx="'+cx+'" cy="'+cy+'" r="'+R+'" fill="#1a2148" stroke="rgba(238,242,255,.25)" stroke-width="1"/>';
+    var top=cy-R, bot=cy+R;
+    // правый полукруг (освещённый терминатор) — путь от верх к низ по внешней дуге + внутренней эллиптической
+    var side = frac<0.5 ? 1 : 0; // на какой стороне свет
+    var outer = 'M '+cx+' '+top+' A '+R+' '+R+' 0 0 '+(side)+' '+cx+' '+bot;
+    var inner = ' A '+rx+' '+R+' 0 0 '+(k>0?1-side:side)+' '+cx+' '+top+' Z';
+    var lightPath='<path d="'+outer+inner+'" fill="#F3CD86"/>';
+    svg.innerHTML=dark+lightPath;
+  })();
+
+  /* мобильное меню */
+  var burger=document.getElementById("burger"), mobile=document.getElementById("mobile"),
+      scrim=document.getElementById("scrim"), mclose=document.getElementById("mclose");
+  function openM(){ mobile.classList.add("open"); scrim.classList.add("show"); burger.setAttribute("aria-expanded","true"); }
+  function closeM(){ mobile.classList.remove("open"); scrim.classList.remove("show"); burger.setAttribute("aria-expanded","false"); }
+  burger.addEventListener("click", openM); mclose.addEventListener("click", closeM); scrim.addEventListener("click", closeM);
+  mobile.querySelectorAll("a").forEach(function(a){ a.addEventListener("click", closeM); });
+
+  /* вкладки (программы, расписание) */
+  document.querySelectorAll(".tabs").forEach(function(group){
+    var tabs=group.querySelectorAll(".tab"), scope=group.closest("section");
+    tabs.forEach(function(tab){
+      tab.addEventListener("click", function(){
+        tabs.forEach(function(t){ t.classList.remove("active"); t.setAttribute("aria-selected","false"); });
+        tab.classList.add("active"); tab.setAttribute("aria-selected","true");
+        scope.querySelectorAll(".tabpanel").forEach(function(p){ p.classList.toggle("active", p.dataset.panel===tab.dataset.tab); });
+      });
+    });
+  });
+
+  /* калькулятор билетов */
+  var progSel=document.getElementById("f-prog"), form=document.getElementById("bookForm"),
+      done=document.getElementById("bookDone"), errBox=document.getElementById("formErr");
+  var PRICES={adult:700,child:450,conc:500}, LABEL={adult:"Взрослый",child:"Детский",conc:"Льготный"};
+  function counts(){
+    var c={}; document.querySelectorAll("#qty .qrow").forEach(function(r){ c[r.dataset.type]=parseInt(r.querySelector(".n").textContent,10)||0; }); return c;
+  }
+  function plural(n){ var a=n%10,b=n%100; return a===1&&b!==11?"билет":(a>=2&&a<=4&&(b<10||b>=20)?"билета":"билетов"); }
+  function recalc(){
+    var c=counts(), total=0, qty=0;
+    for(var k in c){ total+=c[k]*PRICES[k]; qty+=c[k]; }
+    document.getElementById("totalCount").textContent=qty+" "+plural(qty);
+    document.getElementById("totalSum").textContent=total.toLocaleString("ru-RU")+" ₽";
+    document.querySelectorAll("#qty .qrow").forEach(function(r){
+      var n=parseInt(r.querySelector(".n").textContent,10)||0;
+      r.querySelector('[data-d="-1"]').disabled=n<=0;
+      r.querySelector('[data-d="1"]').disabled=n>=10;
+    });
+    return {c:c,total:total,qty:qty};
+  }
+  document.querySelectorAll("#qty .stepper button").forEach(function(b){
+    b.addEventListener("click", function(){
+      var span=b.parentElement.querySelector(".n"), n=parseInt(span.textContent,10)||0;
+      n=Math.max(0,Math.min(10,n+parseInt(b.dataset.d,10)));
+      span.textContent=n; errBox.textContent=""; recalc();
+    });
+  });
+
+  function resetToForm(){ done.classList.remove("show"); form.style.display=""; errBox.textContent=""; }
+  form.addEventListener("submit", function(e){
+    e.preventDefault();
+    var r=recalc();
+    if(r.qty===0){ errBox.textContent="Добавьте хотя бы один билет."; return; }
+    var prog=progSel.value, time=document.getElementById("f-time").value, date=document.getElementById("f-date").value;
+    var dateTxt=date?new Date(date).toLocaleDateString("ru-RU",{day:"numeric",month:"long"}):"сегодня";
+    var lines="";
+    for(var k in r.c){ if(r.c[k]>0) lines+="<div><span>"+LABEL[k]+" × "+r.c[k]+"</span><b>"+(r.c[k]*PRICES[k]).toLocaleString("ru-RU")+" ₽</b></div>"; }
+    document.getElementById("doneMsg").textContent="Ждём вас на «"+prog.replace(/^[^«]*«|»$/g,"")+"» — "+dateTxt+", "+time+".";
+    document.getElementById("doneSum").innerHTML=
+      "<div><span>Программа</span><b style='max-width:60%;text-align:right'>"+prog+"</b></div>"+
+      "<div><span>Когда</span><b>"+dateTxt+", "+time+"</b></div>"+lines+
+      "<div style='border-top:1px solid var(--line);margin-top:6px;padding-top:10px'><span>Итого</span><b style='color:var(--gold)'>"+r.total.toLocaleString("ru-RU")+" ₽</b></div>";
+    form.style.display="none"; done.classList.add("show");
+    done.scrollIntoView({behavior:reduce?"auto":"smooth", block:"center"});
+  });
+  document.getElementById("bookAgain").addEventListener("click", resetToForm);
+
+  /* кнопки «Купить билет» → к калькулятору + подстановка программы */
+  document.querySelectorAll("[data-book]").forEach(function(b){
+    b.addEventListener("click", function(e){
+      e.preventDefault();
+      var prog=b.getAttribute("data-prog");
+      if(prog){ for(var i=0;i<progSel.options.length;i++){ if(progSel.options[i].text===prog){ progSel.selectedIndex=i; break; } } }
+      closeM(); resetToForm();
+      document.getElementById("tickets").scrollIntoView({behavior:reduce?"auto":"smooth"});
+    });
+  });
+
+  /* появление секций */
+  if("IntersectionObserver" in window && !reduce){
+    var io=new IntersectionObserver(function(en){ en.forEach(function(x){ if(x.isIntersecting){ x.target.classList.add("in"); io.unobserve(x.target); } }); }, {rootMargin:"0px 0px -8% 0px",threshold:.08});
+    document.querySelectorAll(".reveal").forEach(function(el){ io.observe(el); });
+  } else document.querySelectorAll(".reveal").forEach(function(el){ el.classList.add("in"); });
+
+  /* активная ссылка навигации + подчёркивание */
+  var nav=document.getElementById("nav"), ink=document.getElementById("ink");
+  var links=[].slice.call(nav.querySelectorAll("a"));
+  var secs=links.map(function(a){ return document.querySelector(a.getAttribute("href")); });
+  function moveInk(a){ if(!a){ink.style.width="0";return;} ink.style.left=a.offsetLeft+"px"; ink.style.width=a.offsetWidth+"px"; }
+  function onScroll(){
+    var y=scrollY+parseInt(getComputedStyle(root).getPropertyValue("--hh"))+30, cur=-1;
+    for(var i=0;i<secs.length;i++){ if(secs[i]&&secs[i].offsetTop<=y) cur=i; }
+    links.forEach(function(a){ a.classList.remove("active"); });
+    if(cur>=0){ links[cur].classList.add("active"); moveInk(links[cur]); } else moveInk(null);
+  }
+  addEventListener("scroll", onScroll, {passive:true}); addEventListener("resize", onScroll);
+  links.forEach(function(a){ a.addEventListener("mouseenter",function(){moveInk(a)}); a.addEventListener("mouseleave",onScroll); });
+  recalc(); onScroll();
+})();
+</script>
+</body>
+</html>
